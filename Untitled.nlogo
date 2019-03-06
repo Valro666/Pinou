@@ -27,7 +27,7 @@ to-report endloop
   report a
 end
 
-to gorizon
+to vent
   set ctp ctp + 1
   ask turtles [
     set pcolor white
@@ -49,12 +49,12 @@ to gorizon
 update-plots
 output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [gorizon]
+  if endloop != 1 [vent]
   if endloop != 0 [ set res ( opti / ctp ) ]
 
 end
 
-to goBapt
+to vent2_0
   set ctp ctp + 1
   ask turtles [
     set pcolor white
@@ -66,7 +66,7 @@ to goBapt
       let bas patch-at 0 -1
       ifelse([pcolor] of haut = black) [ rt -90 fd 1 rt 90 ]
       [ ifelse([pcolor] of bas = black) [ rt 90 fd 1 rt -90 ]
-      [ output-print "3eme choix"
+      [
         rt 90 fd 1 rt -90
     ;set pcolor white
     ]
@@ -83,12 +83,48 @@ to goBapt
 update-plots
 ;output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [goBapt]
+  if endloop != 1 [vent2_0]
   if endloop != 0 [ set res ( opti / ctp ) ]
 
 end
 
-to goBapt2
+to vent2_1
+  set ctp ctp + 1
+  ask turtles [
+    set pcolor white
+     let devant patch-ahead 1
+    let radar 1
+    let radarMoins -1
+    ifelse random 100 > 95 [ rt 90 fd 1 rt -90 ][
+    if ([pcolor] of devant = white) [
+      let haut patch-at 0 1
+      let bas patch-at 0 -1
+      ifelse([pcolor] of haut = black) [ rt -90 fd 1 rt 90 ]
+      [ ifelse([pcolor] of bas = black) [ rt 90 fd 1 rt -90 ]
+      [
+        fd 1
+    ;set pcolor white
+    ]
+    ]
+    ]
+    ]
+
+    if ([pcolor] of devant = black) [
+       fd 1
+    ;set pcolor white
+    ]
+
+  ]
+;ask turtles [ move ]
+update-plots
+;output-print ( count patches with [pcolor = white]) / ( count patches )
+tick
+  if endloop != 1 [vent2_1]
+  if endloop != 0 [ set res ( opti / ctp ) ]
+
+end
+
+to virage
   set ctp ctp + 1
   ask turtles [
      let devant patch-ahead 1
@@ -110,12 +146,12 @@ to goBapt2
 update-plots
 output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [goBapt2]
+  if endloop != 1 [virage]
   if endloop != 0 [ set res ( opti / ctp ) ]
 end
 
 
-to goty
+to aleat
   set ctp ctp + 1
 ask turtles
 [ move ]
@@ -123,7 +159,7 @@ update-plots
 let a ( count patches with [pcolor = white]) / ( count patches )
 output-print a
 output-print ctp
-  if endloop != 1 [ goty ]
+  if endloop != 1 [ aleat ]
   if endloop != 0 [ set res ( opti / ctp ) ]
 
 
@@ -192,40 +228,6 @@ NIL
 NIL
 1
 
-BUTTON
-828
-19
-891
-52
-NIL
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-756
-19
-819
-52
-NIL
-go
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
 10
 64
@@ -242,8 +244,8 @@ BUTTON
 17
 743
 50
-NIL
-goty\n
+aleat
+aleat\n
 NIL
 1
 T
@@ -271,25 +273,8 @@ BUTTON
 749
 98
 NIL
-gorizon\n
+vent\n
 NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-759
-65
-861
-98
-Loop gorizon
-gorizon
-T
 1
 T
 OBSERVER
@@ -308,7 +293,7 @@ number
 number
 1
 100
-7.0
+100.0
 1
 1
 NIL
@@ -328,10 +313,10 @@ res
 BUTTON
 681
 111
-752
+759
 144
-goBapt
-goBapt
+NIL
+vent2_0
 NIL
 1
 T
@@ -343,12 +328,12 @@ NIL
 1
 
 BUTTON
-680
-162
-758
-195
-goBapt2
-goBapt2
+682
+199
+760
+232
+NIL
+virage
 NIL
 1
 T
@@ -358,6 +343,34 @@ NIL
 NIL
 NIL
 1
+
+BUTTON
+682
+156
+800
+189
+NIL
+vent2_1
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+158
+174
+215
+219
+NIL
+opti
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
