@@ -1,4 +1,3 @@
-
 globals [ctp opti res]
 
 to setup
@@ -46,7 +45,6 @@ to gorizon
     ]
 
   ]
-
 ;ask turtles [ move ]
 update-plots
 output-print ( count patches with [pcolor = white]) / ( count patches )
@@ -56,6 +54,65 @@ tick
 
 end
 
+to goBapt
+  set ctp ctp + 1
+  ask turtles [
+    set pcolor white
+     let devant patch-ahead 1
+    let radar 1
+    let radarMoins -1
+    if ([pcolor] of devant = white) [
+      let haut patch-at 0 1
+      let bas patch-at 0 -1
+      ifelse([pcolor] of haut = black) [ rt -90 fd 1 rt 90 ]
+      [ ifelse([pcolor] of bas = black) [ rt 90 fd 1 rt -90 ]
+      [ output-print "3eme choix"
+        rt 90 fd 1 rt -90
+    ;set pcolor white
+    ]
+    ]
+    ]
+
+    if ([pcolor] of devant = black) [
+      fd 1
+    ;set pcolor white
+    ]
+
+  ]
+;ask turtles [ move ]
+update-plots
+;output-print ( count patches with [pcolor = white]) / ( count patches )
+tick
+  if endloop != 1 [goBapt]
+  if endloop != 0 [ set res ( opti / ctp ) ]
+
+end
+
+to goBapt2
+  set ctp ctp + 1
+  ask turtles [
+     let devant patch-ahead 1
+    if ([pcolor] of devant = white) [
+      ifelse ([pcolor] of patch-here = black) [ rt 90 set pcolor white
+        fd 1 ]
+      [ move ]
+    ;set pcolor white
+    ]
+
+    if ([pcolor] of devant = black) [
+      set pcolor white
+      fd 1
+    ;set pcolor white
+    ]
+
+  ]
+;ask turtles [ move ]
+update-plots
+output-print ( count patches with [pcolor = white]) / ( count patches )
+tick
+  if endloop != 1 [goBapt2]
+  if endloop != 0 [ set res ( opti / ctp ) ]
+end
 
 
 to goty
@@ -92,9 +149,9 @@ set pcolor white
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+233
 10
-647
+670
 448
 -1
 -1
@@ -119,10 +176,10 @@ ticks
 30.0
 
 BUTTON
-52
-78
-115
-111
+11
+16
+74
+49
 NIL
 setup
 NIL
@@ -136,10 +193,10 @@ NIL
 1
 
 BUTTON
-82
-184
-145
-217
+828
+19
+891
+52
 NIL
 go
 NIL
@@ -153,10 +210,10 @@ NIL
 1
 
 BUTTON
-104
-242
-167
-275
+756
+19
+819
+52
 NIL
 go
 T
@@ -170,10 +227,10 @@ NIL
 1
 
 MONITOR
-704
-88
-914
-133
+10
+64
+220
+109
 NIL
 count patches with [pcolor = white]
 17
@@ -181,10 +238,10 @@ count patches with [pcolor = white]
 11
 
 BUTTON
-48
-133
-111
-166
+680
+17
+743
+50
 NIL
 goty\n
 NIL
@@ -198,10 +255,10 @@ NIL
 1
 
 MONITOR
-51
-308
-108
-353
+16
+174
+73
+219
 NIL
 ticks
 17
@@ -209,10 +266,10 @@ ticks
 11
 
 BUTTON
-735
-199
-807
-232
+677
+65
+749
+98
 NIL
 gorizon\n
 NIL
@@ -226,10 +283,10 @@ NIL
 1
 
 BUTTON
-676
-285
-778
-318
+759
+65
+861
+98
 Loop gorizon
 gorizon
 T
@@ -243,30 +300,64 @@ NIL
 1
 
 SLIDER
-814
-180
-986
-213
+10
+124
+182
+157
 number
 number
 1
 100
-42.0
+7.0
 1
 1
 NIL
 HORIZONTAL
 
 MONITOR
-917
-303
-974
-348
+86
+173
+143
+218
 NIL
 res
 17
 1
 11
+
+BUTTON
+681
+111
+752
+144
+goBapt
+goBapt
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+680
+162
+758
+195
+goBapt2
+goBapt2
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
