@@ -3,6 +3,7 @@ globals [ctp opti res]
 to setup
 clear-all
   set ctp 1
+  ask n-of obs patches [ set pcolor gray ]
 crt number [set heading 90
 set color pink
 setxy random-xcor random-ycor
@@ -23,146 +24,129 @@ tick
 end
 
 to-report endloop
-  let a ( count patches with [pcolor = white]) / ( count patches )
+  let a (( count patches with [pcolor = white])+( count patches with [pcolor = gray])) / ( count patches )
   report a
 end
 
 to vent
   set ctp ctp + 1
+  let temp 0
   ask turtles [
-    set pcolor white
-     let devant patch-ahead 1
-    if ([pcolor] of devant = white) [
-      rt 90
-      fd 1
-      rt -90
-    ;set pcolor white
+    let devant patch-ahead 1
+    let bas patch-at 0 -1
+    if([pcolor] of patch-here != gray) [ set pcolor white ]
+
+    if ([pcolor] of devant != black) [
+      ifelse ([pcolor] of bas != gray) [
+        rt 90
+        fd 1
+        rt -90
+        set temp 1
+      ]
+      [
+        if ([pcolor] of devant != gray) [fd 1 set temp 1]
+      ]
     ]
 
     if ([pcolor] of devant = black) [
       fd 1
-    ;set pcolor white
+      set temp 1
     ]
 
   ]
-;ask turtles [ move ]
 update-plots
-output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [vent]
-  if endloop != 0 [ set res ( opti / ctp ) ]
-
+if ( endloop != 1 ) and ( temp != 0 ) [vent]
+if endloop != 0 [ set res ( opti / ctp ) ]
 end
 
 to vent2_0
   set ctp ctp + 1
   ask turtles [
-    set pcolor white
-     let devant patch-ahead 1
-    let radar 1
-    let radarMoins -1
-    if ([pcolor] of devant = white) [
+  if([pcolor] of patch-here != gray) [ set pcolor white ]
+  let devant patch-ahead 1
+    if ([pcolor] of devant != black) [
       let haut patch-at 0 1
       let bas patch-at 0 -1
       ifelse([pcolor] of haut = black) [ rt -90 fd 1 rt 90 ]
       [ ifelse([pcolor] of bas = black) [ rt 90 fd 1 rt -90 ]
-      [
-        rt 90 fd 1 rt -90
-    ;set pcolor white
-    ]
-    ]
+        [
+          ifelse([pcolor] of bas != gray)[ rt 90 fd 1 rt -90 ]
+          [
+            if([pcolor] of devant != gray)[ fd 1 ]
+          ]
+        ]
+      ]
     ]
 
     if ([pcolor] of devant = black) [
       fd 1
-    ;set pcolor white
     ]
 
   ]
-;ask turtles [ move ]
 update-plots
-;output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [vent2_0]
-  if endloop != 0 [ set res ( opti / ctp ) ]
-
+if endloop != 1 [vent2_0]
+if endloop != 0 [ set res ( opti / ctp ) ]
 end
 
 to vent2_1
   set ctp ctp + 1
   ask turtles [
-    set pcolor white
-     let devant patch-ahead 1
-    let radar 1
-    let radarMoins -1
+    if([pcolor] of patch-here != gray) [ set pcolor white ]
+    let devant patch-ahead 1
     ifelse random 100 > 95 [ rt 90 fd 1 rt -90 ][
-    if ([pcolor] of devant = white) [
-      let haut patch-at 0 1
-      let bas patch-at 0 -1
-      ifelse([pcolor] of haut = black) [ rt -90 fd 1 rt 90 ]
-      [ ifelse([pcolor] of bas = black) [ rt 90 fd 1 rt -90 ]
-      [
-        fd 1
-    ;set pcolor white
-    ]
-    ]
-    ]
+      if ([pcolor] of devant != black) [
+        let haut patch-at 0 1
+        let bas patch-at 0 -1
+        ifelse([pcolor] of haut = black) [ rt -90 fd 1 rt 90 ]
+        [ ifelse([pcolor] of bas = black) [ rt 90 fd 1 rt -90 ]
+          [
+            fd 1
+          ]
+        ]
+      ]
     ]
 
     if ([pcolor] of devant = black) [
        fd 1
-    ;set pcolor white
     ]
 
   ]
-;ask turtles [ move ]
 update-plots
-;output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [vent2_1]
-  if endloop != 0 [ set res ( opti / ctp ) ]
-
+if endloop != 1 [vent2_1]
+if endloop != 0 [ set res ( opti / ctp ) ]
 end
 
 to virage
   set ctp ctp + 1
   ask turtles [
-     let devant patch-ahead 1
-    if ([pcolor] of devant = white) [
-      ifelse ([pcolor] of patch-here = black) [ rt 90 set pcolor white
-        fd 1 ]
+    let devant patch-ahead 1
+    if ([pcolor] of devant != black) [
+      let bas patch-at 0 -1
+      ifelse ([pcolor] of patch-here = black and [pcolor] of bas != gray) [ rt 90 set pcolor white fd 1 ]
       [ move ]
-    ;set pcolor white
     ]
-
     if ([pcolor] of devant = black) [
       set pcolor white
       fd 1
-    ;set pcolor white
     ]
-
   ]
-;ask turtles [ move ]
 update-plots
-output-print ( count patches with [pcolor = white]) / ( count patches )
 tick
-  if endloop != 1 [virage]
-  if endloop != 0 [ set res ( opti / ctp ) ]
+if endloop != 1 [virage]
+if endloop != 0 [ set res ( opti / ctp ) ]
 end
 
 
 to aleat
-  set ctp ctp + 1
+set ctp ctp + 1
 ask turtles
 [ move ]
 update-plots
-let a ( count patches with [pcolor = white]) / ( count patches )
-output-print a
-output-print ctp
-  if endloop != 1 [ aleat ]
-  if endloop != 0 [ set res ( opti / ctp ) ]
-
-
+if endloop != 1 [ aleat ]
+if endloop != 0 [ set res ( opti / ctp ) ]
 tick
 end
 
@@ -180,7 +164,9 @@ to move ;; turtles procedure
 
 rt random 100
 lt random 100
-fd 1
+let devant patch-ahead 1
+if ([pcolor] of devant != gray)
+  [ fd 1 ]
 set pcolor white
 end
 @#$#@#$#@
@@ -293,7 +279,7 @@ number
 number
 1
 100
-100.0
+10.0
 1
 1
 NIL
@@ -347,7 +333,7 @@ NIL
 BUTTON
 682
 156
-800
+759
 189
 NIL
 vent2_1
@@ -372,42 +358,22 @@ opti
 1
 11
 
+SLIDER
+18
+239
+190
+272
+obs
+obs
+0
+100
+0.0
+1
+1
+NIL
+HORIZONTAL
+
 @#$#@#$#@
-## WHAT IS IT?
-
-(a general understanding of what the model is trying to show or explain)
-
-## HOW IT WORKS
-
-(what rules the agents use to create the overall behavior of the model)
-
-## HOW TO USE IT
-
-(how to use the model, including a description of each of the items in the Interface tab)
-
-## THINGS TO NOTICE
-
-(suggested things for the user to notice while running the model)
-
-## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
-
-## CREDITS AND REFERENCES
-
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true
