@@ -9,7 +9,7 @@ set color pink
 setxy random-xcor random-ycor
 ]
 
- set opti (( 33 * 33 ) / number)
+ set opti ((( 33 * 33 ) - obs ) / number)
 ; ask patches [ if ((random 10) < 1) [set pcolor blue]]
 reset-ticks
 end
@@ -139,6 +139,26 @@ if endloop != 1 [virage]
 if endloop != 0 [ set res ( opti / ctp ) ]
 end
 
+to terrier
+  set ctp ctp + 1
+  ask turtles [
+    if([pcolor] of patch-here != gray) [ set pcolor white ]
+    rt 90
+    let devant patch-ahead 1
+    let temp 0
+    while [[pcolor] of devant != black and temp < 4]
+    [
+      rt -90
+      set devant patch-ahead 1
+      set temp temp + 1
+    ]
+    fd 1
+  ]
+update-plots
+tick
+if endloop != 1 [terrier]
+if endloop != 0 [ set res ( opti / ctp ) ]
+end
 
 to aleat
 set ctp ctp + 1
@@ -279,7 +299,7 @@ number
 number
 1
 100
-10.0
+2.0
 1
 1
 NIL
@@ -372,6 +392,23 @@ obs
 1
 NIL
 HORIZONTAL
+
+BUTTON
+685
+247
+751
+280
+NIL
+terrier\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 @#$#@#$#@
